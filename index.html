@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+    <title>Sistema de Biblioteca - Moderno</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: left;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 5px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            justify-content: center;
+        }
+        
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .card h2 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+            min-height: 44px;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            justify-content: center;
+            min-height: 44px;
+            min-width: 44px;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .stat-card p {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 1rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            min-width: 600px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+            position: sticky;
+            left: 0;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-available {
+            background-color: #e8f6ef;
+            color: var(--success);
+        }
+        
+        .status-borrowed {
+            background-color: #fdebd0;
+            color: var(--warning);
+        }
+        
+        .status-overdue {
+            background-color: #fadbd8;
+            color: var(--danger);
+        }
+        
+        .search-box {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-box input {
+            flex: 1;
+            max-width: 400px;
+            min-width: 200px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .page-btn {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        .page-btn.active {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .alert-success {
+            background-color: #e8f6ef;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .alert-error {
+            background-color: #fadbd8;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .alert-warning {
+            background-color: #fdebd0;
+            color: var(--warning);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            min-width: 44px;
+            min-height: 44px;
+        }
+        
+        .confirmation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+        }
+        
+        /* RESPONSIVIDADE PARA MOBILE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 0 15px;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 5px;
+            }
+            
+            .nav-tab {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box input,
+            .search-box select {
+                max-width: 100%;
+                min-width: auto;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card h2 {
+                font-size: 1.2rem;
+            }
+            
+            table {
+                font-size: 0.8rem;
+                min-width: 500px;
+            }
+            
+            th, td {
+                padding: 8px 5px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                margin: 2px 0;
+                min-height: 36px;
+            }
+            
+            .login-container {
+                margin: 2rem auto;
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+                margin: 10px;
+            }
+            
+            .confirmation-buttons {
+                flex-direction: column;
+            }
+            
+            .confirmation-buttons .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tab {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+                min-width: 100px;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .card h2 {
+                font-size: 1.1rem;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            table {
+                font-size: 0.75rem;
+                min-width: 400px;
+            }
+            
+            th, td {
+                padding: 6px 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div class="login-container" id="loginScreen">
+        <h1 class="login-title">Sistema de Biblioteca</h1>
+        <div class="form-group">
+            <label for="username">Usuário</label>
+            <input id="username" placeholder="Digite seu usuário" type="text"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input id="password" placeholder="Digite sua senha" type="password"/>
+        </div>
+        <div class="form-group">
+            <select id="userRole">
+                <option value="admin">Administrador</option>
+                <option value="attendant">Atendente</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" id="loginBtn" style="width: 100%;">Entrar</button>
+    </div>
+
+    <!-- Sistema Principal -->
+    <div class="hidden" id="mainSystem">
+        <header>
+            <div class="header-content">
+                <div class="logo">📚 Sistema de Biblioteca</div>
+                <div class="user-info">
+                    <span id="currentUser">Admin</span>
+                    <button class="btn btn-warning" id="logoutBtn">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-tab="dashboard">Dashboard</div>
+                <div class="nav-tab" data-tab="books">Livros</div>
+                <div class="nav-tab" data-tab="loans">Empréstimos</div>
+                <div class="nav-tab" data-tab="students">Alunos</div>
+                <div class="nav-tab" data-tab="reports">Relatórios</div>
+            </div>
+
+            <!-- Alertas -->
+            <div id="alertContainer"></div>
+
+            <!-- Dashboard -->
+            <div class="tab-content active" id="dashboard">
+                <div class="card">
+                    <h2>Estatísticas da Biblioteca</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3 id="totalStudents">0</h3>
+                            <p>Total de Alunos</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalBooks">0</h3>
+                            <p>Total de Livros</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="activeLoans">0</h3>
+                            <p>Empréstimos Ativos</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalLoans">0</h3>
+                            <p>Total de Empréstimos</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="availableBooks">0</h3>
+                            <p>Livros Disponíveis</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="overdueLoans">0</h3>
+                            <p>Empréstimos Atrasados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Ações Rápidas</h2>
+                    <div class="actions">
+                        <button class="btn btn-primary" data-tab="books">Cadastrar Livro</button>
+                        <button class="btn btn-success" data-tab="loans">Registrar Empréstimo</button>
+                        <button class="btn btn-warning" data-tab="loans">Registrar Devolução</button>
+                        <button class="btn btn-primary" data-tab="students">Cadastrar Aluno</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Empréstimos Próximos do Vencimento</h2>
+                    <div class="table-container">
+                        <table id="dueSoonTable">
+                            <thead>
+                                <tr>
+                                    <th>Aluno</th>
+                                    <th>Livro</th>
+                                    <th>Data de Devolução</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão de Livros -->
+            <div class="tab-content" id="books">
+                <div class="card">
+                    <h2>Cadastrar Livro</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="isbn">Código/ISBN</label>
+                            <input id="isbn" placeholder="Digite o código/ISBN" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input id="title" placeholder="Digite o título" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Autor</label>
+                            <input id="author" placeholder="Digite o autor" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="publicationYear">Ano de Publicação</label>
+                            <input id="publicationYear" placeholder="Digite o ano" type="number"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Categoria</label>
+                            <select id="category">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="ficcao">Ficção</option>
+                                <option value="nao-ficcao">Não Ficção</option>
+                                <option value="cientifico">Científico</option>
+                                <option value="didatico">Didático</option>
+                                <option value="biografia">Biografia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="publisher">Editora</label>
+                            <input id="publisher" placeholder="Digite a editora" type="text"/>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="addBookBtn">Cadastrar Livro</button>
+                        <button class="btn btn-warning" onclick="cancelEdit()">Cancelar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="search-box">
+                        <input id="bookSearch" placeholder="Buscar livros por título, autor ou ISBN..." type="text"/>
+                        <button class="btn btn-primary" id="searchBookBtn">Buscar</button>
+                        <button class="btn btn-warning" id="clearBookSearch">Limpar</button>
+                    </div>
+                    <h2>Lista de Livros</h2>
+                    <div class="table-container">
+                        <table id="booksTable">
+                            <thead>
+                                <tr>
+                                    <th>Código/ISBN</th>
+                                    <th>Título</th>
+                                    <th>Autor</th>
+                                    <th>Ano</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="bookPagination">
+                        <!-- Paginação será gerada via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão de Empréstimos -->
+            <div class="tab-content" id="loans">
+                <div class="card">
+                    <h2>Registrar Empréstimo</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentId">Matrícula do Aluno</label>
+                            <input id="studentId" placeholder="Digite a matrícula" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookCode">Código do Livro</label>
+                            <input id="bookCode" placeholder="Digite o código do livro" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="loanDays">Dias de Empréstimo</label>
+                            <select id="loanDays">
+                                <option value="7">7 dias</option>
+                                <option selected value="14">14 dias</option>
+                                <option value="21">21 dias</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" id="registerLoanBtn">Registrar Empréstimo</button>
+                </div>
+
+                <div class="card">
+                    <h2>Registrar Devolução</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="returnBookCode">Código do Livro</label>
+                            <input id="returnBookCode" placeholder="Digite o código do livro" type="text"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-warning" id="registerReturnBtn">Registrar Devolução</button>
+                </div>
+
+                <div class="card">
+                    <h2>Listar Todos os Empréstimos</h2>
+                    <div class="search-box">
+                        <input id="loanSearch" placeholder="Buscar empréstimos..." type="text"/>
+                        <select id="loanStatusFilter">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativos</option>
+                            <option value="overdue">Atrasados</option>
+                            <option value="returned">Devolvidos</option>
+                        </select>
+                        <button class="btn btn-primary" id="searchLoanBtn">Buscar</button>
+                        <button class="btn btn-warning" id="clearLoanSearch">Limpar</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="loansTable">
+                            <thead>
+                                <tr>
+                                    <th>Aluno</th>
+                                    <th>Livro</th>
+                                    <th>Data Empréstimo</th>
+                                    <th>Data Devolução</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="loanPagination">
+                        <!-- Paginação será gerada via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão de Alunos -->
+            <div class="tab-content" id="students">
+                <div class="card">
+                    <h2>Cadastrar Aluno</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentRegistration">Matrícula</label>
+                            <input id="studentRegistration" placeholder="Digite a matrícula" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentName">Nome</label>
+                            <input id="studentName" placeholder="Digite o nome" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentEmail">E-mail</label>
+                            <input id="studentEmail" placeholder="Digite o e-mail" type="email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentCourse">Curso</label>
+                            <input id="studentCourse" placeholder="Digite o curso" type="text"/>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="addStudentBtn">Cadastrar Aluno</button>
+                        <button class="btn btn-warning" onclick="cancelEdit()">Cancelar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Lista de Alunos</h2>
+                    <div class="search-box">
+                        <input id="studentSearch" placeholder="Buscar alunos por nome ou matrícula..." type="text"/>
+                        <button class="btn btn-primary" id="searchStudentBtn">Buscar</button>
+                        <button class="btn btn-warning" id="clearStudentSearch">Limpar</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="studentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Matrícula</th>
+                                    <th>Nome</th>
+                                    <th>Curso</th>
+                                    <th>E-mail</th>
+                                    <th>Empréstimos Ativos</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="studentPagination">
+                        <!-- Paginação será gerada via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatórios -->
+            <div class="tab-content" id="reports">
+                <div class="card">
+                    <h2>Relatórios da Biblioteca</h2>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="generatePopularBooks">Livros Mais Populares</button>
+                        <button class="btn btn-warning" id="generateOverdueReport">Empréstimos Atrasados</button>
+                        <button class="btn btn-success" id="generateLoanHistory">Histórico de Empréstimos</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 id="reportTitle">Relatório</h2>
+                    <div class="table-container">
+                        <div id="reportContent">
+                            <!-- Conteúdo do relatório será inserido aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmação -->
+        <div class="modal" id="confirmationModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Confirmar Ação</h3>
+                    <button class="close-modal">×</button>
+                </div>
+                <p id="modalMessage">Tem certeza que deseja realizar esta ação?</p>
+                <div class="confirmation-buttons">
+                    <button class="btn btn-danger" id="confirmAction">Confirmar</button>
+                    <button class="btn btn-primary" id="cancelAction">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados de exemplo para demonstração - AGORA COM PERSISTÊNCIA
+        let books = JSON.parse(localStorage.getItem('libraryBooks')) || [{'author': 'Machado de Assis',
+          'category': 'ficcao',
+          'id': 1,
+          'isbn': '978-85-359-0277-4',
+          'publisher': 'Editora A',
+          'status': 'available',
+          'title': 'Dom Casmurro',
+          'year': 1899},
+         {'author': 'Aluísio Azevedo',
+          'category': 'ficcao',
+          'id': 2,
+          'isbn': '978-85-7232-227-8',
+          'publisher': 'Editora B',
+          'status': 'borrowed',
+          'title': 'O Cortiço',
+          'year': 1890},
+         {'author': 'Jorge Amado',
+          'category': 'ficcao',
+          'id': 3,
+          'isbn': '978-65-86020-10-9',
+          'publisher': 'Companhia das Letras',
+          'status': 'available',
+          'title': 'Capitães da Areia',
+          'year': 1937},
+         {'author': 'Clarice Lispector',
+          'category': 'ficcao',
+          'id': 4,
+          'isbn': '978-85-250-5677-5',
+          'publisher': 'Rocco',
+          'status': 'available',
+          'title': 'A Hora da Estrela',
+          'year': 1977},
+         {'author': 'Graciliano Ramos',
+          'category': 'ficcao',
+          'id': 5,
+          'isbn': '978-85-391-0844-8',
+          'publisher': 'Record',
+          'status': 'available',
+          'title': 'Vidas Secas',
+          'year': 1938}];
+
+        let students = JSON.parse(localStorage.getItem('libraryStudents')) || [{'activeLoans': 1,
+          'course': 'Engenharia',
+          'email': 'joao@escola.com',
+          'id': 1,
+          'name': 'João Silva',
+          'registration': '2023001'},
+         {'activeLoans': 0,
+          'course': 'Medicina',
+          'email': 'maria@escola.com',
+          'id': 2,
+          'name': 'Maria Santos',
+          'registration': '2023002'},
+         {'activeLoans': 0,
+          'course': 'Direito',
+          'email': 'pedro@escola.com',
+          'id': 3,
+          'name': 'Pedro Andrade',
+          'registration': '2023003'},
+         {'activeLoans': 2,
+          'course': 'Arquitetura',
+          'email': 'ana@escola.com',
+          'id': 4,
+          'name': 'Ana Oliveira',
+          'registration': '2023004'},
+         {'activeLoans': 0,
+          'course': 'Computação',
+          'email': 'lucas@escola.com',
+          'id': 5,
+          'name': 'Lucas Pereira',
+          'registration': '2023005'}];
+
+        let loans = JSON.parse(localStorage.getItem('libraryLoans')) || [
+            { 
+                id: 1, 
+                studentId: 1, 
+                bookId: 2, 
+                loanDate: "2024-03-01", 
+                dueDate: "2024-03-15", 
+                returnDate: null, 
+                status: "active" 
+            },
+            { 
+                id: 2, 
+                studentId: 4, 
+                bookId: 1, 
+                loanDate: "2024-03-05", 
+                dueDate: "2024-03-12",
+                returnDate: null, 
+                status: "active" 
+            }
+        ];
+
+        // Variáveis para controle de paginação
+        let currentBookPage = 1;
+        let currentLoanPage = 1;
+        let currentStudentPage = 1;
+        const itemsPerPage = 5;
+
+        // Elementos DOM
+        const loginScreen = document.getElementById('loginScreen');
+        const mainSystem = document.getElementById('mainSystem');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const currentUser = document.getElementById('currentUser');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const alertContainer = document.getElementById('alertContainer');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const confirmAction = document.getElementById('confirmAction');
+        const cancelAction = document.getElementById('cancelAction');
+        const closeModal = document.querySelector('.close-modal');
+
+        // FUNÇÃO PARA GERAR IDs ÚNICOS
+        function generateUniqueId(items) {
+            if (items.length === 0) return 1;
+            const maxId = Math.max(...items.map(item => item.id), 0);
+            return maxId + 1;
+        }
+
+        // FUNÇÃO PARA SALVAR DADOS NO LOCAL STORAGE
+        function saveData() {
+            try {
+                localStorage.setItem('libraryBooks', JSON.stringify(books));
+                localStorage.setItem('libraryStudents', JSON.stringify(students));
+                localStorage.setItem('libraryLoans', JSON.stringify(loans));
+            } catch (e) {
+                console.error('Erro ao salvar dados:', e);
+                showAlert('Erro ao salvar dados. O armazenamento pode estar cheio.', 'error');
+            }
+        }
+
+        // FUNÇÃO PARA VERIFICAR EMPRÉSTIMOS ATRASADOS
+        function checkOverdueLoans() {
+            const today = new Date().toISOString().split('T')[0];
+            let updated = false;
+            
+            loans.forEach(loan => {
+                if (loan.status === 'active' && loan.dueDate < today) {
+                    loan.status = 'overdue';
+                    updated = true;
+                    
+                    const book = books.find(b => b.id === loan.bookId);
+                    if (book && book.status !== 'overdue') {
+                        book.status = 'overdue';
+                    }
+                }
+            });
+            
+            if (updated) {
+                saveData();
+                updateStatistics();
+                
+                if (document.getElementById('loans').classList.contains('active')) {
+                    renderLoansTable();
+                }
+                if (document.getElementById('dashboard').classList.contains('active')) {
+                    renderDueSoonLoans();
+                }
+            }
+        }
+
+        // FUNÇÃO PARA CANCELAR EDIÇÃO
+        function cancelEdit() {
+            clearBookForm();
+            clearStudentForm();
+            
+            const addBookBtn = document.getElementById('addBookBtn');
+            addBookBtn.textContent = 'Cadastrar Livro';
+            addBookBtn.onclick = addBook;
+            
+            const addStudentBtn = document.getElementById('addStudentBtn');
+            addStudentBtn.textContent = 'Cadastrar Aluno';
+            addStudentBtn.onclick = addStudent;
+            
+            showAlert('Edição cancelada.', 'warning');
+        }
+
+        // FUNÇÃO PARA SUPORTE MOBILE
+        function addTouchSupport() {
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.style.cursor = 'pointer';
+            });
+            
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            document.querySelectorAll('input, select').forEach(element => {
+                element.addEventListener('focus', function() {
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            });
+        }
+
+        // Inicialização do sistema
+        document.addEventListener('DOMContentLoaded', function() {
+            addTouchSupport();
+            checkOverdueLoans();
+            setInterval(checkOverdueLoans, 60000);
+            
+            loginBtn.addEventListener('click', handleLogin);
+            logoutBtn.addEventListener('click', handleLogout);
+            
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
+            
+            document.querySelectorAll('[data-tab]').forEach(button => {
+                button.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+            
+            closeModal.addEventListener('click', closeConfirmationModal);
+            cancelAction.addEventListener('click', closeConfirmationModal);
+            confirmAction.addEventListener('click', executeConfirmedAction);
+            
+            document.getElementById('addBookBtn').addEventListener('click', addBook);
+            document.getElementById('searchBookBtn').addEventListener('click', searchBooks);
+            document.getElementById('clearBookSearch').addEventListener('click', clearBookSearch);
+            
+            document.getElementById('registerLoanBtn').addEventListener('click', registerLoan);
+            document.getElementById('registerReturnBtn').addEventListener('click', registerReturn);
+            document.getElementById('searchLoanBtn').addEventListener('click', searchLoans);
+            document.getElementById('clearLoanSearch').addEventListener('click', clearLoanSearch);
+            
+            document.getElementById('addStudentBtn').addEventListener('click', addStudent);
+            document.getElementById('searchStudentBtn').addEventListener('click', searchStudents);
+            document.getElementById('clearStudentSearch').addEventListener('click', clearStudentSearch);
+            
+            document.getElementById('generatePopularBooks').addEventListener('click', generatePopularBooksReport);
+            document.getElementById('generateOverdueReport').addEventListener('click', generateOverdueReport);
+            document.getElementById('generateLoanHistory').addEventListener('click', generateLoanHistory);
+            
+            updateStatistics();
+            renderBooksTable();
+            renderLoansTable();
+            renderStudentsTable();
+            renderDueSoonLoans();
+        });
+
+        // Funções de autenticação
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userRole = document.getElementById('userRole').value;
+            
+            if (username && password) {
+                loginScreen.classList.add('hidden');
+                mainSystem.classList.remove('hidden');
+                currentUser.textContent = `${username} (${userRole})`;
+                showAlert('Login realizado com sucesso!', 'success');
+                
+                setTimeout(() => {
+                    document.querySelector('.nav-tab.active').focus();
+                }, 100);
+            } else {
+                showAlert('Por favor, preencha todos os campos!', 'error');
+            }
+        }
+
+        function handleLogout() {
+            mainSystem.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('username').focus();
+        }
+
+        // Navegação entre abas
+        function switchTab(tabName) {
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'dashboard') {
+                updateStatistics();
+                renderDueSoonLoans();
+            } else if (tabName === 'books') {
+                renderBooksTable();
+            } else if (tabName === 'loans') {
+                renderLoansTable();
+            } else if (tabName === 'students') {
+                renderStudentsTable();
+            }
+            
+            if (window.innerWidth <= 768) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Sistema de alertas
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <span>${type === 'success' ? '✓' : type === 'error' ? '✗' : '⚠'}</span>
+                <span>${message}</span>
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Modal de confirmação
+        let pendingAction = null;
+
+        function showConfirmationModal(title, message, action) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            pendingAction = action;
+            confirmationModal.style.display = 'flex';
+            
+            setTimeout(() => {
+                cancelAction.focus();
+            }, 100);
+        }
+
+        function closeConfirmationModal() {
+            confirmationModal.style.display = 'none';
+            pendingAction = null;
+        }
+
+        function executeConfirmedAction() {
+            if (pendingAction) {
+                pendingAction();
+            }
+            closeConfirmationModal();
+        }
+
+        // Funções para livros
+        function addBook() {
+            const isbn = document.getElementById('isbn').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const year = document.getElementById('publicationYear').value;
+            const category = document.getElementById('category').value;
+            const publisher = document.getElementById('publisher').value.trim();
+            
+            if (!isbn || !title || !author || !year) {
+                showAlert('Por favor, preencha todos os campos obrigatórios!', 'error');
+                return;
+            }
+            
+            const currentYear = new Date().getFullYear();
+            if (year < 1000 || year > currentYear) {
+                showAlert(`Por favor, insira um ano válido (1000-${currentYear})!`, 'error');
+                return;
+            }
+            
+            if (!/^[0-9\-]+$/.test(isbn)) {
+                showAlert('ISBN deve conter apenas números e hífens!', 'error');
+                return;
+            }
+            
+            const existingBook = books.find(book => book.isbn === isbn);
+            if (existingBook) {
+                showAlert('Já existe um livro com este ISBN cadastrado!', 'error');
+                return;
+            }
+            
+            const newBook = {
+                id: generateUniqueId(books),
+                isbn,
+                title,
+                author,
+                year: parseInt(year),
+                category,
+                publisher,
+                status: 'available'
+            };
+            
+            books.push(newBook);
+            saveData();
+            renderBooksTable();
+            updateStatistics();
+            clearBookForm();
+            
+            showAlert('Livro cadastrado com sucesso!', 'success');
+        }
+
+        function clearBookForm() {
+            document.getElementById('isbn').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('publicationYear').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('publisher').value = '';
+        }
+
+        function editBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                document.getElementById('isbn').value = book.isbn;
+                document.getElementById('title').value = book.title;
+                document.getElementById('author').value = book.author;
+                document.getElementById('publicationYear').value = book.year;
+                document.getElementById('category').value = book.category;
+                document.getElementById('publisher').value = book.publisher;
+                
+                const addButton = document.getElementById('addBookBtn');
+                addButton.textContent = 'Atualizar Livro';
+                addButton.onclick = function() { updateBook(bookId); };
+                
+                document.getElementById('books').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function updateBook(bookId) {
+            const isbn = document.getElementById('isbn').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const year = document.getElementById('publicationYear').value;
+            const category = document.getElementById('category').value;
+            const publisher = document.getElementById('publisher').value.trim();
+            
+            if (!isbn || !title || !author || !year) {
+                showAlert('Por favor, preencha todos os campos obrigatórios!', 'error');
+                return;
+            }
+            
+            const currentYear = new Date().getFullYear();
+            if (year < 1000 || year > currentYear) {
+                showAlert(`Por favor, insira um ano válido (1000-${currentYear})!`, 'error');
+                return;
+            }
+            
+            const bookIndex = books.findIndex(b => b.id === bookId);
+            if (bookIndex !== -1) {
+                const existingBook = books.find(book => book.isbn === isbn && book.id !== bookId);
+                if (existingBook) {
+                    showAlert('Já existe outro livro com este ISBN!', 'error');
+                    return;
+                }
+                
+                books[bookIndex] = {
+                    ...books[bookIndex],
+                    isbn,
+                    title,
+                    author,
+                    year: parseInt(year),
+                    category,
+                    publisher
+                };
+                
+                saveData();
+                renderBooksTable();
+                clearBookForm();
+                
+                const addButton = document.getElementById('addBookBtn');
+                addButton.textContent = 'Cadastrar Livro';
+                addButton.onclick = addBook;
+                
+                showAlert('Livro atualizado com sucesso!', 'success');
+            } else {
+                showAlert('Livro não encontrado!', 'error');
+            }
+        }
+
+        function deleteBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (!book) {
+                showAlert('Livro não encontrado!', 'error');
+                return;
+            }
+            
+            const activeLoan = loans.find(loan => loan.bookId === bookId && (loan.status === 'active' || loan.status === 'overdue'));
+            if (activeLoan) {
+                showAlert('Não é possível excluir um livro que está emprestado!', 'error');
+                return;
+            }
+            
+            showConfirmationModal(
+                'Excluir Livro',
+                'Tem certeza que deseja excluir este livro? Esta ação não pode ser desfeita.',
+                function() {
+                    const bookIndex = books.findIndex(b => b.id === bookId);
+                    if (bookIndex !== -1) {
+                        books.splice(bookIndex, 1);
+                        saveData();
+                        renderBooksTable();
+                        updateStatistics();
+                        showAlert('Livro excluído com sucesso!', 'success');
+                    } else {
+                        showAlert('Erro ao excluir livro!', 'error');
+                    }
+                }
+            );
+        }
+
+        function searchBooks() {
+            const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
+            currentBookPage = 1;
+            renderBooksTable(searchTerm);
+        }
+
+        function clearBookSearch() {
+            document.getElementById('bookSearch').value = '';
+            currentBookPage = 1;
+            renderBooksTable();
+        }
+
+        function renderBooksTable(searchTerm = '') {
+            const tbody = document.getElementById('booksTable').querySelector('tbody');
+            tbody.innerHTML = '';
+            
+            let filteredBooks = books;
+            
+            if (searchTerm) {
+                filteredBooks = books.filter(book => 
+                    book.title.toLowerCase().includes(searchTerm) ||
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    book.isbn.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            const startIndex = (currentBookPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
+            
+            if (paginatedBooks.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Nenhum livro encontrado</td></tr>';
+            } else {
+                paginatedBooks.forEach(book => {
+                    const statusClass = book.status === 'available' ? 'status-available' : 
+                                      book.status === 'borrowed' ? 'status-borrowed' : 'status-overdue';
+                    const statusText = book.status === 'available' ? 'Disponível' : 
+                                     book.status === 'borrowed' ? 'Emprestado' : 'Atrasado';
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${book.isbn}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.year}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="mobile-actions">
+                                <button class="btn btn-primary" onclick="editBook(${book.id})">Editar</button>
+                                <button class="btn btn-danger" onclick="deleteBook(${book.id})">Excluir</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            
+            renderPagination('bookPagination', filteredBooks.length, currentBookPage, 'book');
+        }
+
+        // Funções para empréstimos
+        function registerLoan() {
+            const studentRegistration = document.getElementById('studentId').value.trim();
+            const bookCode = document.getElementById('bookCode').value.trim();
+            const loanDays = parseInt(document.getElementById('loanDays').value);
+            
+            if (!studentRegistration || !bookCode) {
+                showAlert('Por favor, preencha todos os campos!', 'error');
+                return;
+            }
+            
+            const student = students.find(s => s.registration === studentRegistration);
+            if (!student) {
+                showAlert('Aluno não encontrado!', 'error');
+                return;
+            }
+            
+            const book = books.find(b => b.isbn === bookCode);
+            if (!book) {
+                showAlert('Livro não encontrado!', 'error');
+                return;
+            }
+            
+            if (book.status !== 'available') {
+                showAlert('Este livro não está disponível para empréstimo!', 'error');
+                return;
+            }
+            
+            const loanDate = new Date();
+            const dueDate = new Date(loanDate);
+            dueDate.setDate(loanDate.getDate() + loanDays);
+            
+            const formatDate = (date) => {
+                return date.toISOString().split('T')[0];
+            };
+            
+            const newLoan = {
+                id: generateUniqueId(loans),
+                studentId: student.id,
+                bookId: book.id,
+                loanDate: formatDate(loanDate),
+                dueDate: formatDate(dueDate),
+                returnDate: null,
+                status: 'active'
+            };
+            
+            loans.push(newLoan);
+            
+            book.status = 'borrowed';
+            
+            student.activeLoans++;
+            
+            saveData();
+            renderLoansTable();
+            updateStatistics();
+            clearLoanForm();
+            
+            showAlert('Empréstimo registrado com sucesso!', 'success');
+        }
+
+        function registerReturn() {
+            const bookCode = document.getElementById('returnBookCode').value.trim();
+            
+            if (!bookCode) {
+                showAlert('Por favor, informe o código do livro!', 'error');
+                return;
+            }
+            
+            const book = books.find(b => b.isbn === bookCode);
+            if (!book) {
+                showAlert('Livro não encontrado!', 'error');
+                return;
+            }
+            
+            const activeLoan = loans.find(loan => loan.bookId === book.id && (loan.status === 'active' || loan.status === 'overdue'));
+            if (!activeLoan) {
+                showAlert('Este livro não está emprestado atualmente!', 'error');
+                return;
+            }
+            
+            activeLoan.returnDate = new Date().toISOString().split('T')[0];
+            activeLoan.status = 'returned';
+            
+            book.status = 'available';
+            
+            const student = students.find(s => s.id === activeLoan.studentId);
+            if (student) {
+                student.activeLoans--;
+            }
+            
+            saveData();
+            renderLoansTable();
+            updateStatistics();
+            document.getElementById('returnBookCode').value = '';
+            
+            showAlert('Devolução registrada com sucesso!', 'success');
+        }
+
+        function searchLoans() {
+            const searchTerm = document.getElementById('loanSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('loanStatusFilter').value;
+            currentLoanPage = 1;
+            renderLoansTable(searchTerm, statusFilter);
+        }
+
+        function clearLoanSearch() {
+            document.getElementById('loanSearch').value = '';
+            document.getElementById('loanStatusFilter').value = '';
+            currentLoanPage = 1;
+            renderLoansTable();
+        }
+
+        function renderLoansTable(searchTerm = '', statusFilter = '') {
+            const tbody = document.getElementById('loansTable').querySelector('tbody');
+            tbody.innerHTML = '';
+            
+            let filteredLoans = loans.map(loan => {
+                const student = students.find(s => s.id === loan.studentId);
+                const book = books.find(b => b.id === loan.bookId);
+                return {
+                    ...loan,
+                    studentName: student ? student.name : 'N/A',
+                    bookTitle: book ? book.title : 'N/A'
+                };
+            });
+            
+            if (searchTerm) {
+                filteredLoans = filteredLoans.filter(loan => 
+                    loan.studentName.toLowerCase().includes(searchTerm) ||
+                    loan.bookTitle.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (statusFilter) {
+                filteredLoans = filteredLoans.filter(loan => loan.status === statusFilter);
+            }
+            
+            const startIndex = (currentLoanPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedLoans = filteredLoans.slice(startIndex, endIndex);
+            
+            if (paginatedLoans.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Nenhum empréstimo encontrado</td></tr>';
+            } else {
+                paginatedLoans.forEach(loan => {
+                    const statusClass = loan.status === 'active' ? 'status-available' : 
+                                      loan.status === 'overdue' ? 'status-overdue' : 'status-borrowed';
+                    const statusText = loan.status === 'active' ? 'Ativo' : 
+                                     loan.status === 'overdue' ? 'Atrasado' : 'Devolvido';
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${loan.studentName}</td>
+                        <td>${loan.bookTitle}</td>
+                        <td>${loan.loanDate}</td>
+                        <td>${loan.dueDate}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="mobile-actions">
+                                ${loan.status === 'active' || loan.status === 'overdue' ? 
+                                    `<button class="btn btn-warning" onclick="renewLoan(${loan.id})">Renovar</button>` : 
+                                    ''
+                                }
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            
+            renderPagination('loanPagination', filteredLoans.length, currentLoanPage, 'loan');
+        }
+
+        // Funções para alunos
+        function addStudent() {
+            const registration = document.getElementById('studentRegistration').value.trim();
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const course = document.getElementById('studentCourse').value.trim();
+            
+            if (!registration || !name || !email || !course) {
+                showAlert('Por favor, preencha todos os campos!', 'error');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Por favor, insira um e-mail válido!', 'error');
+                return;
+            }
+            
+            const existingStudent = students.find(student => student.registration === registration);
+            if (existingStudent) {
+                showAlert('Já existe um aluno com esta matrícula!', 'error');
+                return;
+            }
+            
+            const newStudent = {
+                id: generateUniqueId(students),
+                registration,
+                name,
+                email,
+                course,
+                activeLoans: 0
+            };
+            
+            students.push(newStudent);
+            saveData();
+            renderStudentsTable();
+            updateStatistics();
+            clearStudentForm();
+            
+            showAlert('Aluno cadastrado com sucesso!', 'success');
+        }
+
+        function clearStudentForm() {
+            document.getElementById('studentRegistration').value = '';
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentEmail').value = '';
+            document.getElementById('studentCourse').value = '';
+        }
+
+        function editStudent(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (student) {
+                document.getElementById('studentRegistration').value = student.registration;
+                document.getElementById('studentName').value = student.name;
+                document.getElementById('studentEmail').value = student.email;
+                document.getElementById('studentCourse').value = student.course;
+                
+                const addButton = document.getElementById('addStudentBtn');
+                addButton.textContent = 'Atualizar Aluno';
+                addButton.onclick = function() { updateStudent(studentId); };
+                
+                document.getElementById('students').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function updateStudent(studentId) {
+            const registration = document.getElementById('studentRegistration').value.trim();
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const course = document.getElementById('studentCourse').value.trim();
+            
+            if (!registration || !name || !email || !course) {
+                showAlert('Por favor, preencha todos os campos!', 'error');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('Por favor, insira um e-mail válido!', 'error');
+                return;
+            }
+            
+            const studentIndex = students.findIndex(s => s.id === studentId);
+            if (studentIndex !== -1) {
+                const existingStudent = students.find(student => student.registration === registration && student.id !== studentId);
+                if (existingStudent) {
+                    showAlert('Já existe outro aluno com esta matrícula!', 'error');
+                    return;
+                }
+                
+                students[studentIndex] = {
+                    ...students[studentIndex],
+                    registration,
+                    name,
+                    email,
+                    course
+                };
+                
+                saveData();
+                renderStudentsTable();
+                clearStudentForm();
+                
+                const addButton = document.getElementById('addStudentBtn');
+                addButton.textContent = 'Cadastrar Aluno';
+                addButton.onclick = addStudent;
+                
+                showAlert('Aluno atualizado com sucesso!', 'success');
+            } else {
+                showAlert('Aluno não encontrado!', 'error');
+            }
+        }
+
+        function deleteStudent(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) {
+                showAlert('Aluno não encontrado!', 'error');
+                return;
+            }
+            
+            if (student.activeLoans > 0) {
+                showAlert('Não é possível excluir um aluno com empréstimos ativos!', 'error');
+                return;
+            }
+            
+            showConfirmationModal(
+                'Excluir Aluno',
+                'Tem certeza que deseja excluir este aluno? Esta ação não pode ser desfeita.',
+                function() {
+                    const studentIndex = students.findIndex(s => s.id === studentId);
+                    if (studentIndex !== -1) {
+                        students.splice(studentIndex, 1);
+                        saveData();
+                        renderStudentsTable();
+                        updateStatistics();
+                        showAlert('Aluno excluído com sucesso!', 'success');
+                    } else {
+                        showAlert('Erro ao excluir aluno!', 'error');
+                    }
+                }
+            );
+        }
+
+        function searchStudents() {
+            const searchTerm = document.getElementById('studentSearch').value.toLowerCase();
+            currentStudentPage = 1;
+            renderStudentsTable(searchTerm);
+        }
+
+        function clearStudentSearch() {
+            document.getElementById('studentSearch').value = '';
+            currentStudentPage = 1;
+            renderStudentsTable();
+        }
+
+        function renderStudentsTable(searchTerm = '') {
+            const tbody = document.getElementById('studentsTable').querySelector('tbody');
+            tbody.innerHTML = '';
+            
+            let filteredStudents = students;
+            
+            if (searchTerm) {
+                filteredStudents = students.filter(student => 
+                    student.name.toLowerCase().includes(searchTerm) ||
+                    student.registration.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            const startIndex = (currentStudentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedStudents = filteredStudents.slice(startIndex, endIndex);
+            
+            if (paginatedStudents.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Nenhum aluno encontrado</td></tr>';
+            } else {
+                paginatedStudents.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.registration}</td>
+                        <td>${student.name}</td>
+                        <td>${student.course}</td>
+                        <td>${student.email}</td>
+                        <td>${student.activeLoans}</td>
+                        <td>
+                            <div class="mobile-actions">
+                                <button class="btn btn-primary" onclick="editStudent(${student.id})">Editar</button>
+                                <button class="btn btn-danger" onclick="deleteStudent(${student.id})">Excluir</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            
+            renderPagination('studentPagination', filteredStudents.length, currentStudentPage, 'student');
+        }
+
+        // Funções para relatórios
+        function generatePopularBooksReport() {
+            const reportContent = document.getElementById('reportContent');
+            const reportTitle = document.getElementById('reportTitle');
+            
+            reportTitle.textContent = 'Livros Mais Populares';
+            
+            const bookLoans = {};
+            loans.forEach(loan => {
+                if (!bookLoans[loan.bookId]) {
+                    bookLoans[loan.bookId] = 0;
+                }
+                bookLoans[loan.bookId]++;
+            });
+            
+            const popularBooks = Object.keys(bookLoans)
+                .map(bookId => {
+                    const book = books.find(b => b.id === parseInt(bookId));
+                    return {
+                        title: book ? book.title : 'Livro Desconhecido',
+                        author: book ? book.author : 'Autor Desconhecido',
+                        loans: bookLoans[bookId]
+                    };
+                })
+                .sort((a, b) => b.loans - a.loans);
+            
+            if (popularBooks.length === 0) {
+                reportContent.innerHTML = '<p class="empty-state">Nenhum dado de empréstimo disponível.</p>';
+            } else {
+                let html = '<div class="table-container"><table><thead><tr><th>Posição</th><th>Livro</th><th>Autor</th><th>Nº de Empréstimos</th></tr></thead><tbody>';
+                
+                popularBooks.forEach((book, index) => {
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.loans}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+                reportContent.innerHTML = html;
+            }
+        }
+
+        function generateOverdueReport() {
+            const reportContent = document.getElementById('reportContent');
+            const reportTitle = document.getElementById('reportTitle');
+            
+            reportTitle.textContent = 'Empréstimos Atrasados';
+            
+            const today = new Date().toISOString().split('T')[0];
+            const overdueLoans = loans
+                .map(loan => {
+                    const student = students.find(s => s.id === loan.studentId);
+                    const book = books.find(b => b.id === loan.bookId);
+                    return {
+                        ...loan,
+                        studentName: student ? student.name : 'N/A',
+                        bookTitle: book ? book.title : 'N/A'
+                    };
+                })
+                .filter(loan => loan.status === 'overdue' || (loan.status === 'active' && loan.dueDate < today));
+            
+            if (overdueLoans.length === 0) {
+                reportContent.innerHTML = '<p class="empty-state">Nenhum empréstimo atrasado.</p>';
+            } else {
+                let html = '<div class="table-container"><table><thead><tr><th>Aluno</th><th>Livro</th><th>Data de Empréstimo</th><th>Data de Devolução</th><th>Dias em Atraso</th></tr></thead><tbody>';
+                
+                overdueLoans.forEach(loan => {
+                    const dueDate = new Date(loan.dueDate);
+                    const today = new Date();
+                    const timeDiff = today.getTime() - dueDate.getTime();
+                    const daysOverdue = Math.max(0, Math.floor(timeDiff / (1000 * 3600 * 24)));
+                    
+                    html += `
+                        <tr>
+                            <td>${loan.studentName}</td>
+                            <td>${loan.bookTitle}</td>
+                            <td>${loan.loanDate}</td>
+                            <td>${loan.dueDate}</td>
+                            <td>${daysOverdue}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+                reportContent.innerHTML = html;
+            }
+        }
+
+        function generateLoanHistory() {
+            const reportContent = document.getElementById('reportContent');
+            const reportTitle = document.getElementById('reportTitle');
+            
+            reportTitle.textContent = 'Histórico de Empréstimos';
+            
+            const loanHistory = loans
+                .map(loan => {
+                    const student = students.find(s => s.id === loan.studentId);
+                    const book = books.find(b => b.id === loan.bookId);
+                    return {
+                        ...loan,
+                        studentName: student ? student.name : 'N/A',
+                        bookTitle: book ? book.title : 'N/A'
+                    };
+                })
+                .sort((a, b) => new Date(b.loanDate) - new Date(a.loanDate));
+            
+            if (loanHistory.length === 0) {
+                reportContent.innerHTML = '<p class="empty-state">Nenhum empréstimo registrado.</p>';
+            } else {
+                let html = '<div class="table-container"><table><thead><tr><th>Aluno</th><th>Livro</th><th>Data de Empréstimo</th><th>Data de Devolução</th><th>Status</th></tr></thead><tbody>';
+                
+                loanHistory.forEach(loan => {
+                    const statusText = loan.status === 'active' ? 'Ativo' : 
+                                     loan.status === 'overdue' ? 'Atrasado' : 'Devolvido';
+                    
+                    html += `
+                        <tr>
+                            <td>${loan.studentName}</td>
+                            <td>${loan.bookTitle}</td>
+                            <td>${loan.loanDate}</td>
+                            <td>${loan.returnDate || 'Não devolvido'}</td>
+                            <td>${statusText}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+                reportContent.innerHTML = html;
+            }
+        }
+
+        // Funções auxiliares
+        function updateStatistics() {
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('totalBooks').textContent = books.length;
+            
+            const activeLoansCount = loans.filter(loan => 
+                loan.status === 'active' || loan.status === 'overdue'
+            ).length;
+            document.getElementById('activeLoans').textContent = activeLoansCount;
+            
+            document.getElementById('totalLoans').textContent = loans.length;
+            document.getElementById('availableBooks').textContent = books.filter(book => book.status === 'available').length;
+            
+            const overdueLoansCount = loans.filter(loan => loan.status === 'overdue').length;
+            document.getElementById('overdueLoans').textContent = overdueLoansCount;
+        }
+
+        function renderDueSoonLoans() {
+            const tbody = document.getElementById('dueSoonTable').querySelector('tbody');
+            tbody.innerHTML = '';
+            
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const dueSoonLoans = loans
+                .filter(loan => loan.status === 'active' || loan.status === 'overdue')
+                .map(loan => {
+                    const student = students.find(s => s.id === loan.studentId);
+                    const book = books.find(b => b.id === loan.bookId);
+                    return {
+                        ...loan,
+                        studentName: student ? student.name : 'N/A',
+                        bookTitle: book ? book.title : 'N/A',
+                        dueDateObj: new Date(loan.dueDate)
+                    };
+                })
+                .sort((a, b) => a.dueDateObj - b.dueDateObj);
+            
+            if (dueSoonLoans.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Nenhum empréstimo próximo do vencimento</td></tr>';
+            } else {
+                dueSoonLoans.forEach(loan => {
+                    const daysUntilDue = Math.ceil((loan.dueDateObj - today) / (1000 * 60 * 60 * 24));
+                    let statusText, statusClass;
+                    
+                    if (daysUntilDue < 0) {
+                        statusText = `Atrasado há ${Math.abs(daysUntilDue)} dia(s)`;
+                        statusClass = 'status-overdue';
+                    } else if (daysUntilDue === 0) {
+                        statusText = 'Vence hoje';
+                        statusClass = 'status-overdue';
+                    } else {
+                        statusText = `Vence em ${daysUntilDue} dia(s)`;
+                        statusClass = daysUntilDue <= 2 ? 'status-overdue' : 'status-borrowed';
+                    }
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${loan.studentName}</td>
+                        <td>${loan.bookTitle}</td>
+                        <td>${loan.dueDate}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        function clearLoanForm() {
+            document.getElementById('studentId').value = '';
+            document.getElementById('bookCode').value = '';
+        }
+
+        function renewLoan(loanId) {
+            const loan = loans.find(l => l.id === loanId);
+            if (!loan) {
+                showAlert('Empréstimo não encontrado!', 'error');
+                return;
+            }
+            
+            const dueDate = new Date(loan.dueDate);
+            dueDate.setDate(dueDate.getDate() + 7);
+            loan.dueDate = dueDate.toISOString().split('T')[0];
+            
+            if (loan.status === 'overdue') {
+                loan.status = 'active';
+                
+                const book = books.find(b => b.id === loan.bookId);
+                if (book) {
+                    book.status = 'borrowed';
+                }
+            }
+            
+            saveData();
+            renderLoansTable();
+            updateStatistics();
+            showAlert('Empréstimo renovado com sucesso!', 'success');
+        }
+
+        function renderPagination(containerId, totalItems, currentPage, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            
+            if (totalPages <= 1) return;
+            
+            if (currentPage > 1) {
+                const prevButton = document.createElement('button');
+                prevButton.className = 'page-btn';
+                prevButton.textContent = '«';
+                prevButton.onclick = () => changePage(currentPage - 1, type);
+                container.appendChild(prevButton);
+            }
+            
+            const maxVisiblePages = window.innerWidth <= 480 ? 3 : 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                pageButton.textContent = i;
+                pageButton.onclick = () => changePage(i, type);
+                container.appendChild(pageButton);
+            }
+            
+            if (currentPage < totalPages) {
+                const nextButton = document.createElement('button');
+                nextButton.className = 'page-btn';
+                nextButton.textContent = '»';
+                nextButton.onclick = () => changePage(currentPage + 1, type);
+                container.appendChild(nextButton);
+            }
+        }
+
+        function changePage(page, type) {
+            if (type === 'book') {
+                currentBookPage = page;
+                renderBooksTable(document.getElementById('bookSearch').value);
+            } else if (type === 'loan') {
+                currentLoanPage = page;
+                renderLoansTable(
+                    document.getElementById('loanSearch').value,
+                    document.getElementById('loanStatusFilter').value
+                );
+            } else if (type === 'student') {
+                currentStudentPage = page;
+                renderStudentsTable(document.getElementById('studentSearch').value);
+            }
+            
+            if (window.innerWidth <= 768) {
+                const tableContainer = document.querySelector('.table-container');
+                if (tableContainer) {
+                    tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
