@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sistema de Biblioteca - Moderno</title>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div class="login-container" id="loginScreen">
+        <h1 class="login-title">Sistema de Biblioteca</h1>
+        <div class="form-group">
+            <label for="username">Usuário</label>
+            <input id="username" placeholder="Digite seu usuário" type="text"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input id="password" placeholder="Digite sua senha" type="password"/>
+        </div>
+        <div class="form-group">
+            <select id="userRole">
+                <option value="admin">Administrador</option>
+                <option value="attendant">Atendente</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" id="loginBtn" style="width: 100%;">Entrar</button>
+    </div>
+
+    <!-- Sistema Principal -->
+    <div class="hidden" id="mainSystem">
+        <header>
+            <div class="header-content">
+                <div class="logo">📚 Sistema de Biblioteca</div>
+                <div class="user-info">
+                    <span id="currentUser">Admin</span>
+                    <button class="btn btn-warning" id="logoutBtn">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-tab="dashboard">Dashboard</div>
+                <div class="nav-tab" data-tab="books">Livros</div>
+                <div class="nav-tab" data-tab="loans">Empréstimos</div>
+                <div class="nav-tab" data-tab="students">Alunos</div>
+                <div class="nav-tab" data-tab="reports">Relatórios</div>
+            </div>
+
+            <!-- Alertas -->
+            <div id="alertContainer"></div>
+
+            <!-- Dashboard -->
+            <div class="tab-content active" id="dashboard">
+                <div class="card">
+                    <h2>Estatísticas da Biblioteca</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3 id="totalStudents">0</h3>
+                            <p>Total de Alunos</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalBooks">0</h3>
+                            <p>Total de Livros</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="activeLoans">0</h3>
+                            <p>Empréstimos Ativos</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="totalLoans">0</h3>
+                            <p>Total de Empréstimos</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="availableBooks">0</h3>
+                            <p>Livros Disponíveis</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 id="overdueLoans">0</h3>
+                            <p>Empréstimos Atrasados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Ações Rápidas</h2>
+                    <div class="actions">
+                        <button class="btn btn-primary" data-tab="books">Cadastrar Livro</button>
+                        <button class="btn btn-success" data-tab="loans">Registrar Empréstimo</button>
+                        <button class="btn btn-warning" data-tab="loans">Registrar Devolução</button>
+                        <button class="btn btn-primary" data-tab="students">Cadastrar Aluno</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Empréstimos Próximos do Vencimento</h2>
+                    <table id="dueSoonTable">
+                        <thead>
+                            <tr>
+                                <th>Aluno</th>
+                                <th>Livro</th>
+                                <th>Data de Devolução</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados serão preenchidos via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Gestão de Livros -->
+            <div class="tab-content" id="books">
+                <div class="card">
+                    <h2>Cadastrar Livro</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="isbn">Código/ISBN</label>
+                            <input id="isbn" placeholder="Digite o código/ISBN" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input id="title" placeholder="Digite o título" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Autor</label>
+                            <input id="author" placeholder="Digite o autor" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="publicationYear">Ano de Publicação</label>
+                            <input id="publicationYear" placeholder="Digite o ano" type="number"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Categoria</label>
+                            <select id="category">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="ficcao">Ficção</option>
+                                <option value="nao-ficcao">Não Ficção</option>
+                                <option value="cientifico">Científico</option>
+                                <option value="didatico">Didático</option>
+                                <option value="biografia">Biografia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="publisher">Editora</label>
+                            <input id="publisher" placeholder="Digite a editora" type="text"/>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="addBookBtn">Cadastrar Livro</button>
+                        <button class="btn btn-warning" onclick="cancelEdit()">Cancelar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="search-box">
+                        <input id="bookSearch" placeholder="Buscar livros por título, autor ou ISBN..." type="text"/>
+                        <button class="btn btn-primary" id="searchBookBtn">Buscar</button>
+                        <button class="btn btn-warning" id="clearBookSearch">Limpar</button>
+                    </div>
+                    <h2>Lista de Livros</h2>
+                    <table id="booksTable">
+                        <thead>
+                            <tr>
+                                <th>Código/ISBN</th>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Ano</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados serão preenchidos via JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="pagination" id="bookPagination">
+                        <!-- Paginação será gerada via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão de Empréstimos -->
+            <div class="tab-content" id="loans">
+                <div class="card">
+                    <h2>Registrar Empréstimo</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentId">Matrícula do Aluno</label>
+                            <input id="studentId" placeholder="Digite a matrícula" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookCode">Código do Livro</label>
+                            <input id="bookCode" placeholder="Digite o código do livro" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="loanDays">Dias de Empréstimo</label>
+                            <select id="loanDays">
+                                <option value="7">7 dias</option>
+                                <option selected value="14">14 dias</option>
+                                <option value="21">21 dias</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" id="registerLoanBtn">Registrar Empréstimo</button>
+                </div>
+
+                <div class="card">
+                    <h2>Registrar Devolução</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="returnBookCode">Código do Livro</label>
+                            <input id="returnBookCode" placeholder="Digite o código do livro" type="text"/>
+                        </div>
+                    </div>
+                    <button class="btn btn-warning" id="registerReturnBtn">Registrar Devolução</button>
+                </div>
+
+                <div class="card">
+                    <h2>Listar Todos os Empréstimos</h2>
+                    <div class="search-box">
+                        <input id="loanSearch" placeholder="Buscar empréstimos..." type="text"/>
+                        <select id="loanStatusFilter">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativos</option>
+                            <option value="overdue">Atrasados</option>
+                            <option value="returned">Devolvidos</option>
+                        </select>
+                        <button class="btn btn-primary" id="searchLoanBtn">Buscar</button>
+                        <button class="btn btn-warning" id="clearLoanSearch">Limpar</button>
+                    </div>
+                    <table id="loansTable">
+                        <thead>
+                            <tr>
+                                <th>Aluno</th>
+                                <th>Livro</th>
+                                <th>Data Empréstimo</th>
+                                <th>Data Devolução</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados serão preenchidos via JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="pagination" id="loanPagination">
+                        <!-- Paginação será gerada via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão de Alunos -->
+            <div class="tab-content" id="students">
+                <div class="card">
+                    <h2>Cadastrar Aluno</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="studentRegistration">Matrícula</label>
+                            <input id="studentRegistration" placeholder="Digite a matrícula" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentName">Nome</label>
+                            <input id="studentName" placeholder="Digite o nome" type="text"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentEmail">E-mail</label>
+                            <input id="studentEmail" placeholder="Digite o e-mail" type="email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentCourse">Curso</label>
+                            <input id="studentCourse" placeholder="Digite o curso" type="text"/>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="addStudentBtn">Cadastrar Aluno</button>
+                        <button class="btn btn-warning" onclick="cancelEdit()">Cancelar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Lista de Alunos</h2>
+                    <div class="search-box">
+                        <input id="studentSearch" placeholder="Buscar alunos por nome ou matrícula..." type="text"/>
+                        <button class="btn btn-primary" id="searchStudentBtn">Buscar</button>
+                        <button class="btn btn-warning" id="clearStudentSearch">Limpar</button>
+                    </div>
+                    <table id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Nome</th>
+                                <th>Curso</th>
+                                <th>E-mail</th>
+                                <th>Empréstimos Ativos</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dados serão preenchidos via JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="pagination" id="studentPagination">
+                        <!-- Paginação será gerada via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatórios -->
+            <div class="tab-content" id="reports">
+                <div class="card">
+                    <h2>Relatórios da Biblioteca</h2>
+                    <div class="actions">
+                        <button class="btn btn-primary" id="generatePopularBooks">Livros Mais Populares</button>
+                        <button class="btn btn-warning" id="generateOverdueReport">Empréstimos Atrasados</button>
+                        <button class="btn btn-success" id="generateLoanHistory">Histórico de Empréstimos</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 id="reportTitle">Relatório</h2>
+                    <div id="reportContent">
+                        <!-- Conteúdo do relatório será inserido aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmação -->
+        <div class="modal" id="confirmationModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Confirmar Ação</h3>
+                    <button class="close-modal">×</button>
+                </div>
+                <p id="modalMessage">Tem certeza que deseja realizar esta ação?</p>
+                <div class="confirmation-buttons">
+                    <button class="btn btn-danger" id="confirmAction">Confirmar</button>
+                    <button class="btn btn-primary" id="cancelAction">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
